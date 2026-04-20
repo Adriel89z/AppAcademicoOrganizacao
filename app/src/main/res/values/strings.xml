@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">AppAcademicoOrganizacao</string>
+    <string name="title_tarefas">Tarefas</string>
+    <string name="title_calendario">Calendário</string>
+    <string name="title_foco">Foco</string>
+</resources>
