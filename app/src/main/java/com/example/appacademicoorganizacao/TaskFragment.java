@@ -1,36 +1,34 @@
 package com.example.appacademicoorganizacao;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class TaskFragment extends Fragment {
 
-    EditText inputTask;
-    Button btnAdd;
-    RecyclerView recyclerView;
+    private EditText inputTask;
+    private Button btnAdd;
+    private RecyclerView recyclerView;
 
-    List<Task> taskList;
-    TaskAdapter adapter;
+    private List<Task> taskList;
+    private TaskAdapter adapter;
 
     private static final String PREF_NAME = "tasks";
     private static final String KEY_TASKS = "task_list";
@@ -44,52 +42,65 @@ public class TaskFragment extends Fragment {
         btnAdd = view.findViewById(R.id.btnAdd);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        loadTasks();
-
-        adapter = new TaskAdapter(getContext(), taskList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
-
-        //Adicionar tarefa
-        btnAdd.setOnClickListener(v -> {
-            String text = inputTask.getText().toString();
-
-            if (!text.isEmpty()) {
-                String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
-
-                taskList.add(new Task(text, currentDate));
-                adapter.notifyItemInserted(taskList.size() - 1);
-                saveTasks();
-                inputTask.setText("");
+        // Enter = adicionar tarefa
+        inputTask.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                btnAdd.performClick();
+                return true;
             }
+            return false;
         });
 
-        //Swipe para deletar
-        ItemTouchHelper.SimpleCallback simpleCallback =
-                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        loadTasks();
 
-                    @Override
-                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                        return false;
-                    }
+        adapter = new TaskAdapter(requireContext(), taskList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerView.setAdapter(adapter);
 
-                    @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                        int position = viewHolder.getAdapterPosition();
-                        taskList.remove(position);
-                        adapter.notifyItemRemoved(position);
-                        saveTasks();
-                    }
-                };
+        // Botão adicionar tarefa
+        btnAdd.setOnClickListener(v -> {
+            String text = inputTask.getText().toString().trim();
 
-        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
+            if (text.isEmpty()) return;
+
+            Calendar calendar = Calendar.getInstance();
+
+            DatePickerDialog dialog = new DatePickerDialog(
+                    requireContext(),
+                    (view1, year, month, dayOfMonth) -> {
+
+                        String selectedDate = String.format("%02d/%02d/%d", dayOfMonth, month + 1, year);
+
+                        taskList.add(new Task(text, selectedDate));
+                        updateTasks();
+                        recyclerView.scrollToPosition(taskList.size() - 1);
+
+                        inputTask.setText("");
+                        inputTask.clearFocus();
+                    },
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+            );
+
+            dialog.show();
+        });
 
         return view;
     }
 
-    //Salvar tarefas
+    // Atualiza lista + salva
+    private void updateTasks() {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+        saveTasks();
+    }
+
+    // Salvar
     private void saveTasks() {
-        SharedPreferences prefs = requireContext().getSharedPreferences(PREF_NAME, getContext().MODE_PRIVATE);
+        SharedPreferences prefs = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+
         SharedPreferences.Editor editor = prefs.edit();
 
         Gson gson = new Gson();
@@ -99,9 +110,11 @@ public class TaskFragment extends Fragment {
         editor.apply();
     }
 
-    //Carregar tarefas
+    // Carregar
     private void loadTasks() {
-        SharedPreferences prefs = requireContext().getSharedPreferences(PREF_NAME, getContext().MODE_PRIVATE);
+        SharedPreferences prefs = requireContext()
+                .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+
         String json = prefs.getString(KEY_TASKS, null);
 
         if (json != null) {
@@ -110,6 +123,17 @@ public class TaskFragment extends Fragment {
             taskList = gson.fromJson(json, type);
         } else {
             taskList = new ArrayList<>();
+        }
+    }
+
+    // Atualiza ao voltar para tela
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadTasks();
+
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
         }
     }
 }
