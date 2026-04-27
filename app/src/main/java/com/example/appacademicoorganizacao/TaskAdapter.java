@@ -1,34 +1,34 @@
 package com.example.appacademicoorganizacao;
 
-import com.example.appacademicoorganizacao.MainActivity;
-import com.google.gson.Gson;
-
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
-    List<Task> taskList;
-    Context context;
+    public interface TaskActionListener {
+        void onDelete(int position);
+        void onCheckChanged();
+    }
 
-    public TaskAdapter(Context context, List<Task> taskList) {
-        this.context = context;
+    private List<Task> taskList;
+    private TaskActionListener listener;
+
+    public TaskAdapter(List<Task> taskList, TaskActionListener listener) {
         this.taskList = taskList;
+        this.listener = listener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox checkBox;
         TextView textView;
-        Button btnDelete;
+        ImageButton btnDelete;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -36,13 +36,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             textView = itemView.findViewById(R.id.textTask);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_task, parent, false);
-        return new ViewHolder(view);
     }
 
     @Override
@@ -54,29 +47,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         holder.checkBox.setOnCheckedChangeListener(null);
         holder.checkBox.setChecked(task.isDone);
 
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        holder.checkBox.setOnCheckedChangeListener((b, isChecked) -> {
             task.isDone = isChecked;
+            listener.onCheckChanged();
         });
 
-        // 🔥 BOTÃO DE DELETE
         holder.btnDelete.setOnClickListener(v -> {
             int pos = holder.getAdapterPosition();
-
             if (pos != RecyclerView.NO_POSITION) {
-                taskList.remove(pos);
-                notifyDataSetChanged();
-
-                // salvar
-                SharedPreferences prefs = context.getSharedPreferences("tasks", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-
-                Gson gson = new Gson();
-                String json = gson.toJson(taskList);
-
-                editor.putString("task_list", json);
-                editor.apply();
+                listener.onDelete(pos);
             }
         });
+    }
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override

@@ -1,43 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp"
-    android:paddingTop="?attr/actionBarSize"
-    android:background="#0F172A"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#0F172A"
+    android:paddingTop="?attr/actionBarSize">
 
-    <TextView
-        android:id="@+id/textMode"
-        android:text="Pomodoro"
-        android:textSize="24sp"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <!-- Conteúdo central -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textTimer"
-        android:text="25:00"
-        android:textSize="48sp"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="32dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/textMode"
+            android:text="Pomodoro"
+            android:textSize="22sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/btnStartPause"
-        android:text="Iniciar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <!-- Círculo + tempo -->
+        <FrameLayout
+            android:layout_width="260dp"
+            android:layout_height="260dp">
 
-    <Button
-        android:id="@+id/btnReset"
-        android:text="Resetar"
-        android:layout_marginTop="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            <com.example.appacademicoorganizacao.CircularProgressView
+                android:id="@+id/progressCircle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/textTimer"
+                android:text="25:00"
+                android:textSize="40sp"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+
+        <!-- Botões -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/btnStartPause"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:background="@drawable/background_button"
+                android:src="@drawable/icon_play44"/>
+
+            <ImageButton
+                android:id="@+id/btnReset"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/background_button"
+                android:src="@drawable/icon_timer44" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
