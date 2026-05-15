@@ -17,13 +17,13 @@ public class CircularProgressView extends View {
         super(context, attrs);
 
         backgroundPaint = new Paint();
-        backgroundPaint.setColor(0x33FFFFFF);
+        backgroundPaint.setColor(0xFFFFFFFF);
         backgroundPaint.setStyle(Paint.Style.STROKE);
         backgroundPaint.setStrokeWidth(20);
         backgroundPaint.setAntiAlias(true);
 
         progressPaint = new Paint();
-        progressPaint.setColor(0xFFFFFFFF);
+        progressPaint.setColor(0xFF7C3AED);
         progressPaint.setStyle(Paint.Style.STROKE);
         progressPaint.setStrokeWidth(20);
         progressPaint.setAntiAlias(true);

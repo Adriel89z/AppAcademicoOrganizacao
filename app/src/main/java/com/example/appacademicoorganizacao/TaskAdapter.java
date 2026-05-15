@@ -29,12 +29,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         CheckBox checkBox;
         TextView textView;
         ImageButton btnDelete;
+        TextView textDate;
 
         public ViewHolder(View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.checkTask);
             textView = itemView.findViewById(R.id.textTask);
             btnDelete = itemView.findViewById(R.id.btnDelete);
+            textDate = itemView.findViewById(R.id.textDate);
         }
     }
 
@@ -46,6 +48,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         holder.checkBox.setOnCheckedChangeListener(null);
         holder.checkBox.setChecked(task.isDone);
+
+        holder.textDate.setText(task.date);
 
         holder.checkBox.setOnCheckedChangeListener((b, isChecked) -> {
             task.isDone = isChecked;

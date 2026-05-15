@@ -58,11 +58,13 @@ public class CalendarFragment extends Fragment {
                 filteredTasks.remove(position);
                 adapter.notifyItemRemoved(position);
                 saveTasks();
+                setupDecorators();
             }
 
             @Override
             public void onCheckChanged() {
                 saveTasks();
+                setupDecorators();
             }
         });
 
@@ -114,25 +116,86 @@ public class CalendarFragment extends Fragment {
 
         prefs.edit().putString(KEY_TASKS, json).apply();
     }
+
     private void setupDecorators() {
-        Set<CalendarDay> dates = new HashSet<>();
+
+        Set<CalendarDay> pendingDates = new HashSet<>();
+        Set<CalendarDay> completedDates = new HashSet<>();
+        Set<CalendarDay> mixedDates = new HashSet<>();
 
         for (Task task : allTasks) {
+
             try {
+
                 String[] parts = task.date.split("/");
 
                 int day = Integer.parseInt(parts[0]);
                 int month = Integer.parseInt(parts[1]) - 1;
                 int year = Integer.parseInt(parts[2]);
 
-                dates.add(CalendarDay.from(year, month, day));
+                CalendarDay calendarDay = CalendarDay.from(year, month, day);
+
+                boolean hasCompleted = false;
+                boolean hasPending = false;
+
+                // verifica as tasks do mesmo dia
+                for (Task t : allTasks) {
+
+                    if (t.date.equals(task.date)) {
+
+                        if (t.isDone) {
+                            hasCompleted = true;
+                        } else {
+                            hasPending = true;
+                        }
+                    }
+                }
+
+                // misto
+                if (hasCompleted && hasPending) {
+
+                    mixedDates.add(calendarDay);
+
+                    pendingDates.remove(calendarDay);
+                    completedDates.remove(calendarDay);
+                }
+
+                // conclúidas
+                else if (hasCompleted) {
+
+                    if (!mixedDates.contains(calendarDay)) {
+                        completedDates.add(calendarDay);
+                    }
+                }
+
+                // pendentes
+                else {
+
+                    if (!mixedDates.contains(calendarDay)) {
+                        pendingDates.add(calendarDay);
+                    }
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        calendarView.removeDecorators(); // limpa antes (importante)
-        calendarView.addDecorator(new EventDecorator(0xFFBB86FC, dates));
+        calendarView.removeDecorators();
+
+        // vermelho = pendente
+        calendarView.addDecorator(
+                new EventDecorator(0xFFFF5252, pendingDates)
+        );
+
+        // verde = concluído
+        calendarView.addDecorator(
+                new EventDecorator(0xFF4CAF50, completedDates)
+        );
+
+        // laranja = misto
+        calendarView.addDecorator(
+                new EventDecorator(0xFFFF9800, mixedDates)
+        );
     }
 }
