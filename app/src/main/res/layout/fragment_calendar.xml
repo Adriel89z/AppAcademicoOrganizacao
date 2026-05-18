@@ -1,65 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:layout_marginTop="80dp"
     android:background="@color/background">
 
-    <!-- card do calendário -->
-
-    <com.google.android.material.card.MaterialCardView
+    <!-- topbar -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="3dp"
-        app:strokeColor="@color/divider"
-        app:strokeWidth="1dp"
-        app:cardBackgroundColor="@color/surface">
+        android:layout_height="80dp"
+        android:background="@color/topbar"
+        android:gravity="bottom"
+        android:paddingStart="20dp"
+        android:paddingBottom="10dp"
+        android:elevation="4dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:text="Calendário"
+            android:textColor="@color/mcv_text_date_dark"
+            android:textSize="28sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
 
-            <!-- calendário -->
-
-            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-                android:id="@+id/calendarView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:mcv_showOtherDates="all"
-                app:mcv_selectionColor="@color/primary"/>
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <!-- titulo da lista -->
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tarefas do dia"
-        android:textColor="@color/text_primary"
-        android:textSize="18sp"
-        android:fontFamily="sans-serif-medium"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="12dp"/>
-
-    <!-- lista de tarefas -->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCalendar"
+    <!-- conteudo da tela -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="24dp"/>
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- o card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="3dp"
+            app:strokeColor="@color/divider"
+            app:strokeWidth="1dp"
+            app:cardBackgroundColor="@color/surface">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <!--caléndario-->
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:mcv_showOtherDates="all"
+                    app:mcv_selectionColor="@color/primary"
+                    app:mcv_dateTextAppearance="@color/surface"
+                    app:mcv_arrowColor="@color/text_primary"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- titulo das tarefas -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tarefas do dia"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- lista -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="24dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>

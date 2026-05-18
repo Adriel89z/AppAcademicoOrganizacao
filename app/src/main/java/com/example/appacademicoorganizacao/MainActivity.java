@@ -22,15 +22,14 @@ public class MainActivity extends AppCompatActivity {
         // Define quais telas são principais
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_tasks,
-                R.id.navigation_calendar
+                R.id.navigation_calendar,
+                R.id.navigation_foco
         ).build();
 
         NavController navController = Navigation.findNavController(
                 this,
                 R.id.nav_host_fragment_activity_main
         );
-
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
 }

@@ -198,4 +198,5 @@ public class CalendarFragment extends Fragment {
                 new EventDecorator(0xFFFF9800, mixedDates)
         );
     }
+
 }

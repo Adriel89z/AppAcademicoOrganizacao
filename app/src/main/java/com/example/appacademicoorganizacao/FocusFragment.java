@@ -103,11 +103,7 @@ public class FocusFragment extends Fragment {
                 .setDuration(80)
                 .withEndAction(() ->
 
-                        button.animate()
-                                .scaleX(1f)
-                                .scaleY(1f)
-                                .setDuration(80)
-                                .start()
+                        button.animate().scaleX(1f).scaleY(1f).setDuration(80).start()
 
                 ).start();
     }
