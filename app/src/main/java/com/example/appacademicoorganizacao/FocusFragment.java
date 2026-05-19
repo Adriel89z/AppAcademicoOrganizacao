@@ -2,9 +2,7 @@ package com.example.appacademicoorganizacao;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Locale;
 
@@ -24,77 +23,118 @@ public class FocusFragment extends Fragment {
     private ImageView topSand;
     private ImageView bottomSand;
 
-    private CountDownTimer timer;
-
-    private boolean isRunning = false;
-    private boolean isPomodoro = true;
-
-    // 25 minutos
-    private long timeLeft = 1500000;
-    private long totalTime = 1500000;
-
-    private long endTime;
+    private FocusViewModel viewModel;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_focus, container, false);
+        View view = inflater.inflate(
+                R.layout.fragment_focus,
+                container,
+                false
+        );
+
+        viewModel = new ViewModelProvider(requireActivity())
+                .get(FocusViewModel.class);
 
         // texto
+
         textTimer = view.findViewById(R.id.textTimer);
         textMode = view.findViewById(R.id.textMode);
 
-        // os botões
+        // botões
+
         btnStartPause = view.findViewById(R.id.btnStartPause);
         btnReset = view.findViewById(R.id.btnReset);
 
-        // a areia
+        // areia
+
         topSand = view.findViewById(R.id.topSand);
         bottomSand = view.findViewById(R.id.bottomSand);
 
+        // observa o tempo
 
-        // glow da ampulheta + animação
+        viewModel.getTimeLeft().observe(
+                getViewLifecycleOwner(),
+                time -> {
+
+                    updateTimerText(time);
+
+                    updateSandAnimation(time);
+                }
+        );
+
+        // os modos
+
+        viewModel.getIsRunning().observe(getViewLifecycleOwner(), running -> {
+
+                    if (running != null && running) {
+
+                        btnStartPause.setImageResource(
+                                R.drawable.icon_pause44
+                        );
+
+                    } else {
+
+                        btnStartPause.setImageResource(
+                                R.drawable.icon_play44
+                        );
+                    }
+                }
+        );
+
+        // glow
+
         ImageView glow = view.findViewById(R.id.hourglass_glow);
 
         ObjectAnimator glowAnimator =
-                ObjectAnimator.ofFloat(glow, "alpha", 0.55f, 1f);
+                ObjectAnimator.ofFloat(
+                        glow,
+                        "alpha",
+                        0.55f,
+                        1f
+                );
 
         glowAnimator.setDuration(1800);
         glowAnimator.setRepeatMode(ValueAnimator.REVERSE);
         glowAnimator.setRepeatCount(ValueAnimator.INFINITE);
         glowAnimator.start();
 
-        updateTimerText();
-        updateSandAnimation();
-
-
-        //botão de play e pause
+        // o play eo pause
 
         btnStartPause.setOnClickListener(v -> {
 
             animateButton(btnStartPause);
 
-            if (isRunning) {
-                pauseTimer();
-            } else {
-                startTimer();
-            }
+            Boolean running =
+                    viewModel.getIsRunning().getValue();
 
+            if (running != null && running) {
+
+                viewModel.pauseTimer();
+
+            } else {
+
+                viewModel.startTimer();
+
+            }
         });
 
-        //botão reset
-
+        // reset
         btnReset.setOnClickListener(v -> {
 
             animateButton(btnReset);
 
-            resetTimer();
+            viewModel.resetTimer();
+
         });
 
         return view;
     }
 
-    //animação dos botoes
+    // animação botão
     private void animateButton(View button) {
 
         button.animate()
@@ -103,113 +143,17 @@ public class FocusFragment extends Fragment {
                 .setDuration(80)
                 .withEndAction(() ->
 
-                        button.animate().scaleX(1f).scaleY(1f).setDuration(80).start()
+                        button.animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(80)
+                                .start()
 
                 ).start();
     }
 
-     //inicia o timer
-    private void startTimer() {
-
-        endTime = System.currentTimeMillis() + timeLeft;
-
-        btnStartPause.setImageResource(R.drawable.icon_pause44);
-
-        timer = new CountDownTimer(timeLeft, 1000) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-                timeLeft = millisUntilFinished;
-
-                updateTimerText();
-
-                updateSandAnimation();
-
-            }
-
-            @Override
-            public void onFinish() {
-
-                MediaPlayer mediaPlayer =
-                        MediaPlayer.create(getContext(), R.raw.notification);
-
-                mediaPlayer.start();
-
-                switchMode();
-
-            }
-
-        }.start();
-
-        isRunning = true;
-    }
-
-    //pausa o timer
-
-    private void pauseTimer() {
-
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-
-        btnStartPause.setImageResource(R.drawable.icon_play44);
-
-        isRunning = false;
-    }
-
-    //recomeça o timer
-
-    private void resetTimer() {
-
-        if (timer != null) {
-            timer.cancel();
-        }
-
-        isPomodoro = true;
-
-        timeLeft = 1500000;
-        totalTime = 1500000;
-
-        isRunning = false;
-        btnStartPause.setImageResource(R.drawable.icon_play44);
-
-        updateUI();
-        updateTimerText();
-        updateSandAnimation();
-    }
-
-    //modo de pausa
-
-    private void switchMode() {
-
-        if (isPomodoro) {
-
-            // pausa = 5 min
-            timeLeft = 300000;
-            totalTime = 300000;
-
-            isPomodoro = false;
-
-        } else {
-
-            // pomodoro = 25 min
-            timeLeft = 1500000;
-            totalTime = 1500000;
-
-            isPomodoro = true;
-        }
-
-        updateUI();
-        updateTimerText();
-        updateSandAnimation();
-        startTimer();
-    }
-
-    //numeros do timer
-
-    private void updateTimerText() {
+    // timer texto
+    private void updateTimerText(long timeLeft) {
 
         int minutes = (int) (timeLeft / 1000) / 60;
 
@@ -225,21 +169,22 @@ public class FocusFragment extends Fragment {
         textTimer.setText(time);
     }
 
-    //tentativa de animar a areia
+    // animação areia
+    private void updateSandAnimation(long timeLeft) {
 
-    private void updateSandAnimation() {
+        float progress =
+                (float) timeLeft / viewModel.getTotalTime();
 
-        float progress = (float) timeLeft / totalTime;
+        float visualProgress =
+                (float) Math.pow(progress, 0.5f);
 
-        // começo rápido e final lento
-        float visualProgress = (float) Math.pow(progress, 0.5f);
-
-        // areia de cima
+        // areia cima
         topSand.post(() -> {
 
             int height = topSand.getHeight();
 
-            int visibleHeight = (int) (height * visualProgress);
+            int visibleHeight =
+                    (int) (height * visualProgress);
 
             topSand.setClipBounds(
                     new android.graphics.Rect(
@@ -251,12 +196,13 @@ public class FocusFragment extends Fragment {
             );
         });
 
-        // areia de baixo
+        // areia baixo
         bottomSand.post(() -> {
 
             int height = bottomSand.getHeight();
 
-            int visibleHeight = (int) (height * (1f - visualProgress));
+            int visibleHeight =
+                    (int) (height * (1f - visualProgress));
 
             bottomSand.setClipBounds(
                     new android.graphics.Rect(
@@ -268,40 +214,4 @@ public class FocusFragment extends Fragment {
             );
         });
     }
-
-    //muda o icone
-
-    private void updateUI() {
-
-        if (isPomodoro) {
-
-            textMode.setText("Pomodoro");
-
-        } else {
-
-            textMode.setText("Pausa");
-        }
-    }
-
-
-    @Override
-    public void onResume() {
-
-        super.onResume();
-
-        if (isRunning) {
-
-            timeLeft = endTime - System.currentTimeMillis();
-
-            if (timeLeft <= 0) {
-
-                switchMode();
-
-            } else {
-
-                startTimer();
-            }
-        }
-    }
-
 }
