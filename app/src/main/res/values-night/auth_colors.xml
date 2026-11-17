@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modo escuro das telas de login / sem internet. Base: cores do tema escuro do proprio app
+     (fundo #0F172A, cards #1E293B, texto #F8FAFC, divisor #334155). So aparecem se o celular
+     estiver em modo escuro. auth_brand, auth_brand_deep e auth_white NAO mudam. -->
+<resources>
+    <color name="auth_bg">#0F172A</color>
+    <color name="auth_field">#1E293B</color>
+    <color name="auth_focus">#A78BFA</color>
+    <color name="auth_ink">#F8FAFC</color>
+    <color name="auth_muted">#94A3B8</color>
+    <color name="auth_placeholder">#64748B</color>
+    <color name="auth_line">#334155</color>
+    <color name="auth_brand_link">#A78BFA</color>
+    <color name="auth_brand_tint">#2E2352</color>
+    <color name="auth_brand_disabled">#4C3A8C</color>
+    <color name="auth_game_ground">#4B3F78</color>
+    <color name="auth_error_red">#F87171</color>
+    <color name="auth_error_text">#FECACA</color>
+    <color name="auth_error_bg">#3B1517</color>
+    <color name="auth_error_border">#7F1D1D</color>
+</resources>
