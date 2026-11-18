@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Login e sem internet: DayNight, acompanha o modo claro/escuro do celular.
+         As cores de cada modo ficam em values/auth_colors.xml e values-night/auth_colors.xml. -->
+    <style name="Theme.Auth" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/auth_brand</item>
+        <item name="colorPrimaryVariant">@color/auth_brand_deep</item>
+        <item name="colorOnPrimary">@color/auth_white</item>
+        <item name="colorSecondary">@color/auth_brand</item>
+        <!-- Barras transparentes: o app desenha por tras delas  -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/auth_bg</item>
+        <item name="android:windowLightStatusBar">@bool/auth_light_bars</item>
+    </style>
+
+    <!-- Fora do ar: a tela e roxa nos dois modos. -->
+    <style name="Theme.Auth.Purple" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/auth_brand</item>
+        <item name="colorPrimaryVariant">@color/auth_brand_deep</item>
+        <item name="colorOnPrimary">@color/auth_white</item>
+        <item name="colorSecondary">@color/auth_white</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/auth_brand</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

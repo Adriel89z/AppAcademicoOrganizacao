@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <!-- Necessaria para detectar "sem internet" (OfflineActivity) -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,16 +14,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppAcademicoOrganizacao" >
+        <!-- Tela inicial do app: agora e o login -->
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true"
-            android:label="@string/app_name">
+            android:theme="@style/Theme.Auth"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Tela principal que ja existia (Tarefas / Calendario / Foco), sem alteracoes -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name=".OfflineActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Auth" />
+
+        <activity
+            android:name=".ServerDownActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Auth.Purple" />
     </application>
 
 </manifest>

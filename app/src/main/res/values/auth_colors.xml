@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cores das telas de login / sem internet / fora do ar (extraidas das referencias). Prefixo auth_ evita conflito com as cores do app. -->
+<resources>
+    <color name="auth_brand">#7C3CE7</color>
+    <color name="auth_brand_deep">#6726CC</color>
+    <color name="auth_brand_link">#7600F5</color>
+    <color name="auth_brand_tint">#F5EEFF</color>
+    <color name="auth_brand_disabled">#BDA2F3</color>
+    <color name="auth_ink">#26232C</color>
+    <color name="auth_muted">#94909E</color>
+    <color name="auth_placeholder">#B3AFBD</color>
+    <color name="auth_line">#E7E4EC</color>
+    <color name="auth_game_ground">#D9CDF3</color>
+    <!-- Cores "semanticas": mudam no modo escuro (ver values-night/auth_colors.xml) -->
+    <color name="auth_bg">#FFFFFF</color>
+    <color name="auth_field">#FFFFFF</color>
+    <color name="auth_focus">#7C3CE7</color>
+    <!-- Fixas (iguais nos dois modos): texto/icone branco sobre o roxo -->
+    <color name="auth_white">#FFFFFF</color>
+    <color name="auth_white_70">#B3FFFFFF</color>
+    <color name="auth_white_20">#33FFFFFF</color>
+    <color name="auth_error_red">#C62828</color>
+    <color name="auth_error_text">#5B1212</color>
+    <color name="auth_error_bg">#FFF1F1</color>
+    <color name="auth_error_border">#F6C9C9</color>
+</resources>

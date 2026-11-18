@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ilustracao com aneis, nucleo, icone e satelites -->
+    <declare-styleable name="OrbitView">
+        <attr name="orbitRingColor" format="color" />
+        <attr name="orbitCoreColor" format="color" />
+        <attr name="orbitDotColor" format="color" />
+        <attr name="orbitIcon" format="reference" />
+        <attr name="orbitIconTint" format="color" />
+    </declare-styleable>
+</resources>

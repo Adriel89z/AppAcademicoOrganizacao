@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="brand_name">continuum</string>
+
+    <!-- Login -->
+    <string name="login_title">Entre na sua conta</string>
+    <string name="login_subtitle">Seu próximo passo começa aqui.</string>
+    <string name="login_label_email">E-mail</string>
+    <string name="login_hint_email">voce@exemplo.com</string>
+    <string name="login_label_password">Senha</string>
+    <string name="login_hint_password">Digite sua senha</string>
+    <string name="login_forgot">Esqueci minha senha</string>
+    <string name="login_button">Entrar</string>
+    <string name="login_button_loading">Entrando…</string>
+    <string name="login_no_account">Ainda não tem uma conta?</string>
+    <string name="login_create_account">Criar conta</string>
+    <string name="login_preview_states">Visualizar estados:</string>
+    <string name="login_state_offline">Sem conexão</string>
+    <string name="login_state_server_down">Fora do ar</string>
+    <string name="login_coming_soon">Em breve!</string>
+    <string name="cd_toggle_password">Mostrar ou ocultar senha</string>
+
+    <!-- Erros do login -->
+    <string name="error_title">Não foi possível entrar</string>
+    <string name="error_empty">Preencha seu e-mail e sua senha para continuar.</string>
+    <string name="error_invalid_email">Digite um e-mail válido.</string>
+    <string name="error_credentials">E-mail ou senha incorretos. Confira os dados e tente novamente.</string>
+    <string name="error_locked">Muitas tentativas. Tente novamente em %1$d segundos.</string>
+    <string name="error_input_too_long">Os dados informados são muito longos.</string>
+
+    <!-- Fora do ar (manutencao) -->
+    <string name="down_title">Vamos deixar tudo em ordem.</string>
+    <string name="down_body">Estamos resolvendo o problema, não se preocupe. Seu progresso está seguro — volte mais tarde.</string>
+    <string name="down_thanks">Obrigado pela paciência.\nLogo seguimos juntos.</string>
+
+    <!-- Sem conexao -->
+    <string name="offline_title">Parece que estamos sem conexão.</string>
+    <string name="offline_body">Verifique sua conexão com a internet e tente novamente. Seu progresso continua seguro por aqui.</string>
+    <string name="offline_game_label">Enquanto isso, toque para pular os espinhos</string>
+    <string name="offline_button">Tentar novamente</string>
+    <string name="offline_hint">Confira o Wi-Fi ou os dados móveis</string>
+    <string name="offline_still">Ainda sem conexão.</string>
+
+    <!-- Jogo -->
+    <string name="game_score">Pontos: %1$d</string>
+    <string name="game_best">Recorde: %1$d</string>
+    <string name="game_tap_start">Toque para começar</string>
+    <string name="game_over">Fim de jogo · toque para reiniciar</string>
+</resources>
