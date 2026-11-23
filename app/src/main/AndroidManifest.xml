@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Tela principal que ja existia (Tarefas / Calendario / Foco), sem alteracoes -->
+        <!-- Tela principal que ja existia, sem alteracoes -->
         <activity
             android:name=".MainActivity"
             android:exported="false"
